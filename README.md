@@ -1,6 +1,6 @@
 # maven module interdependencies analyzer
 
-Sometimes, on Legacy projects, it's difficult to known which maven module call wich maven module.
+Sometimes, on Legacy projects, it's difficult to known which maven module is calling which maven module.
 
 this maven plugin generate a DOT diagram file.
 
