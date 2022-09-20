@@ -53,22 +53,29 @@ public class MojoMavenModuleAnalyzer extends AbstractMojo {
 
     public void execute() throws MojoExecutionException {
 
-        if(modules.isEmpty()) {
+        if(isFirstModule()) {
             project.getModules().forEach(modules::add);
         }
+
         String groupId = project.getGroupId();
         String artifactId = project.getArtifactId();
 
         List<Dependency> dependencies = project.getDependencies();
         dependencies.stream()
                 .filter(d -> d.getGroupId().equals(groupId))
-                .forEach(d -> {
-                    modules.addDependency(artifactId, d.getArtifactId());
-                });
+                .forEach(d -> modules.addDependency(artifactId, d.getArtifactId()));
 
-        if(lastProject().equals(project)) {
+        if(isLastModule()) {
             this.writer.write(modules, "module-dependency");
         }
+    }
+
+    private boolean isFirstModule() {
+        return modules.isEmpty();
+    }
+
+    private boolean isLastModule() {
+        return lastProject().equals(project);
     }
 
     private MavenProject lastProject() {
