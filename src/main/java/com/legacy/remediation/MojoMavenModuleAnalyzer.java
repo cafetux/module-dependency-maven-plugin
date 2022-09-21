@@ -53,10 +53,6 @@ public class MojoMavenModuleAnalyzer extends AbstractMojo {
 
     public void execute() throws MojoExecutionException {
 
-        if(isFirstModule()) {
-            project.getModules().forEach(modules::add);
-        }
-
         String groupId = project.getGroupId();
         String artifactId = project.getArtifactId();
 

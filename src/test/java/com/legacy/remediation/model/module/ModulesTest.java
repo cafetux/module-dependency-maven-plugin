@@ -44,6 +44,17 @@ class ModulesTest {
         assertThat(find("tata").getDependencies()).hasSize(0);
         assertThat(find("titi").getDependencies()).hasSize(1);
     }
+    @Test
+    void should_create_modules_on_the_fly_when_save_dependencies(){
+        sut = new Modules();
+        sut.addDependency("toto", "titi");
+        sut.addDependency("toto", "tata");
+        sut.addDependency("titi", "tata");
+
+        assertThat(find("toto").getDependencies()).hasSize(2);
+        assertThat(find("tata").getDependencies()).hasSize(0);
+        assertThat(find("titi").getDependencies()).hasSize(1);
+    }
 
     @Test
     void should_can_contains_more_than_26_modules() {

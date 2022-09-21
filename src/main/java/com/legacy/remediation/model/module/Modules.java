@@ -44,7 +44,12 @@ public class Modules {
         return this.modules.stream()
                 .filter(m -> m.getLabel().equals(module))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException(module + " not found"));
+                .orElseGet(() -> create(module));
+    }
+
+    private Module create(String moduleLabel) {
+        add(moduleLabel);
+        return getModule(moduleLabel);
     }
 
     public List<Module> all() {
