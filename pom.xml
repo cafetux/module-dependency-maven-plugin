@@ -4,7 +4,7 @@
     <groupId>com.livido</groupId>
     <artifactId>maven-modules-analyzer</artifactId>
     <packaging>maven-plugin</packaging>
-    <version>1.0</version>
+    <version>2.0-SNAPSHOT</version>
     <name>maven-modules-analyzer Maven Mojo</name>
     <url>http://maven.apache.org</url>
 
