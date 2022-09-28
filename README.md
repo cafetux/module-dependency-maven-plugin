@@ -49,6 +49,7 @@ You can use some configuration on plugin:
         <param>acceptance-test</param>
         <param>another artifact id you want to exclude from schema</param>
     </excludeArtifactIds>
+    <includeExternalDependencies>true if you want to generate illisible diagram with external dependencies (like spring ect). false by default</includeExternalDependencies>
 </configuration>
 ```
 

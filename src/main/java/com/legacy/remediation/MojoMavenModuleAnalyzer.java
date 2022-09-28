@@ -65,6 +65,9 @@ public class MojoMavenModuleAnalyzer extends AbstractMojo {
     @Parameter(name = "excludeArtifactIds", property = "dependency.graph.excludeArtifactIds", defaultValue="")
     private List<String> excludeArtifactIds;
 
+    @Parameter(name = "includeExternalDependencies", property = "dependency.graph.includeExternals", defaultValue="false")
+    private boolean includeExternalDependencies;
+
     private final DiagrammWriter writer = new DotWriter();
     private final ImageRenderer imageriter = new MindfusionPngRenderer();
 
@@ -81,7 +84,7 @@ public class MojoMavenModuleAnalyzer extends AbstractMojo {
                 .filter(d -> !excludeClassifiers.contains(d.getClassifier()))
                 .filter(d -> !excludeScopes.contains(d.getScope()))
                 .filter(d -> !excludeArtifactIds.contains(d.getArtifactId()))
-                .filter(d -> d.getGroupId().equals(groupId))
+                .filter(d -> includeExternalDependencies || d.getGroupId().equals(groupId))
                 .forEach(d -> {
                     LOGGER.info("Keep depeendency between "+d.getArtifactId());
                     modules.addDependency(artifactId, d.getArtifactId());
