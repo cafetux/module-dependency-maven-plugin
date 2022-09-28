@@ -59,4 +59,11 @@ public class Modules {
     public boolean isEmpty() {
         return this.modules.isEmpty();
     }
+
+    @Override
+    public String toString() {
+        return "Modules{" +
+                "modules=" + modules +
+                '}';
+    }
 }

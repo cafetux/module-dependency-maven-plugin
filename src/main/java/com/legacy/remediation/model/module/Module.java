@@ -43,4 +43,13 @@ public class Module {
     public int hashCode() {
         return Objects.hash(symbol);
     }
+
+    @Override
+    public String toString() {
+        return "Module{" +
+                "symbol='" + symbol + '\'' +
+                ", label='" + label + '\'' +
+                ", dependencies=" + dependencies +
+                '}';
+    }
 }

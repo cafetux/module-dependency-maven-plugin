@@ -1,5 +1,6 @@
-package com.legacy.remediation.model;
+package com.legacy.remediation.infrastructure;
 
+import com.legacy.remediation.model.DiagrammWriter;
 import com.legacy.remediation.model.module.Module;
 import com.legacy.remediation.model.module.Modules;
 
@@ -17,7 +18,7 @@ public class DotWriter implements DiagrammWriter {
 
 
     @Override
-    public void write(Modules modules, String fileName) {
+    public File write(Modules modules, String fileName) {
         File toSave = new File(fileName+".gv");
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(toSave))) {
             writer.write("digraph modules {");
@@ -36,6 +37,7 @@ public class DotWriter implements DiagrammWriter {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        return toSave;
     }
 
 }
