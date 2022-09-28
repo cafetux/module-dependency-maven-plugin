@@ -56,6 +56,15 @@ public class MojoMavenModuleAnalyzer extends AbstractMojo {
     @Parameter(name = "renderImage", property = "dependency.graph.renderImage", defaultValue = "true")
     private boolean renderImage;
 
+    @Parameter(name = "excludeClassifiers", property = "dependency.graph.excludeClassifiers", defaultValue="")
+    private List<String> excludeClassifiers;
+
+    @Parameter(name = "excludeScopes", property = "dependency.graph.excludeScopes", defaultValue="")
+    private List<String> excludeScopes;
+
+    @Parameter(name = "excludeArtifactIds", property = "dependency.graph.excludeArtifactIds", defaultValue="")
+    private List<String> excludeArtifactIds;
+
     private final DiagrammWriter writer = new DotWriter();
     private final ImageRenderer imageriter = new MindfusionPngRenderer();
 
@@ -69,6 +78,9 @@ public class MojoMavenModuleAnalyzer extends AbstractMojo {
         LOGGER.info(dependencies.size()+" found");
         dependencies.stream()
                 .peek(x -> LOGGER.info("check for "+x.getGroupId()+":"+x.getArtifactId()))
+                .filter(d -> !excludeClassifiers.contains(d.getClassifier()))
+                .filter(d -> !excludeScopes.contains(d.getScope()))
+                .filter(d -> !excludeArtifactIds.contains(d.getArtifactId()))
                 .filter(d -> d.getGroupId().equals(groupId))
                 .forEach(d -> {
                     LOGGER.info("Keep depeendency between "+d.getArtifactId());

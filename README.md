@@ -37,7 +37,19 @@ You can use some configuration on plugin:
    <configuration>
      <resultDirectory>path to generate results (dot diagram and image). 'target' by default</resultDirectory>
      <renderImage>false to disable image generation. true by default</renderImage>
-   </configuration>
+    <excludeScopes>
+        <param>test</param>
+        <param>another scope of dependencies you want to exclude</param>
+    </excludeScopes>
+    <excludeClassifiers>
+        <param>test</param>
+        <param>another classifier for dependencies you want to exclude</param>
+    </excludeClassifiers>
+    <excludeArtifactIds>
+        <param>acceptance-test</param>
+        <param>another artifact id you want to exclude from schema</param>
+    </excludeArtifactIds>
+</configuration>
 ```
 
 you can use as properties by prefixing configuration keys by dependency.graph.
