@@ -57,3 +57,5 @@ You can use some configuration on plugin:
 
 you can use as properties by prefixing configuration keys by dependency.graph.
 
+## Complementary plugin
+You can use another plugin to render .gv at png: https://github.com/cafetux/dot-diagram-renderer-maven-plugin
