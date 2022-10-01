@@ -1,18 +1,18 @@
-package com.legacy.remediation.model.module;
+package com.legacy.remediation.model.graph;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Modules {
+public class ProjectView {
 
-    private final List<Module> modules = new ArrayList<>();
+    private final List<Node> modules = new ArrayList<>();
     private String currentLetter = "A";
     private int alphabetCount = 1;
 
 
     public void add(String module) {
         if (!exist(module)) {
-            this.modules.add(new Module(currentSymbol(), module));
+            this.modules.add(new Node(currentSymbol(), module));
             nextSymbol();
         }
     }
@@ -35,24 +35,24 @@ public class Modules {
     }
 
     public void addDependency(String module, String dependsOn) {
-        Module source = getModule(module);
-        Module dependency = getModule(dependsOn);
+        Node source = getModule(module);
+        Node dependency = getModule(dependsOn);
         source.addDependency(dependency);
     }
 
-    private Module getModule(String module) {
+    private Node getModule(String module) {
         return this.modules.stream()
                 .filter(m -> m.getLabel().equals(module))
                 .findFirst()
                 .orElseGet(() -> create(module));
     }
 
-    private Module create(String moduleLabel) {
+    private Node create(String moduleLabel) {
         add(moduleLabel);
         return getModule(moduleLabel);
     }
 
-    public List<Module> all() {
+    public List<Node> all() {
         return new ArrayList<>(modules);
     }
 

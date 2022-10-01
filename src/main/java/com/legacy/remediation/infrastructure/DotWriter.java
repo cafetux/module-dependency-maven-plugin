@@ -1,8 +1,8 @@
 package com.legacy.remediation.infrastructure;
 
 import com.legacy.remediation.model.DiagrammWriter;
-import com.legacy.remediation.model.module.Module;
-import com.legacy.remediation.model.module.Modules;
+import com.legacy.remediation.model.graph.Node;
+import com.legacy.remediation.model.graph.ProjectView;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -18,17 +18,17 @@ public class DotWriter implements DiagrammWriter {
 
 
     @Override
-    public File write(Modules modules, String fileName) {
+    public File write(ProjectView modules, String fileName) {
         File toSave = new File(fileName+".gv");
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(toSave))) {
             writer.write("digraph modules {");
             writer.write("\n");
-            for (Module module : modules.all()) {
+            for (Node module : modules.all()) {
                 writer.write(module.getSymbol()+"[label=\""+module.getLabel()+"\"];");
                 writer.write("\n");
             }
-            for (Module module : modules.all()) {
-                for (Module dependency : module.getDependencies()) {
+            for (Node module : modules.all()) {
+                for (Node dependency : module.getDependencies()) {
                     writer.write(module.getSymbol() + " -> " + dependency.getSymbol()+";");
                     writer.write("\n");
                 }

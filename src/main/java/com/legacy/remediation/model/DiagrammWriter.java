@@ -1,6 +1,6 @@
 package com.legacy.remediation.model;
 
-import com.legacy.remediation.model.module.Modules;
+import com.legacy.remediation.model.graph.ProjectView;
 
 import java.io.File;
 
@@ -12,6 +12,6 @@ public interface DiagrammWriter {
      * @param filename the name of the file to write (without extension)
      * @return the saved file
      */
-    File write(Modules modules, String filename);
+    File write(ProjectView modules, String filename);
 
 }

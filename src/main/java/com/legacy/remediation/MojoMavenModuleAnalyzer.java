@@ -18,8 +18,10 @@ package com.legacy.remediation;
 
 import com.legacy.remediation.model.DiagrammWriter;
 import com.legacy.remediation.infrastructure.DotWriter;
-import com.legacy.remediation.model.module.Modules;
-import org.apache.maven.model.Dependency;
+import com.legacy.remediation.model.graph.ProjectView;
+import com.legacy.remediation.model.maven.Dependency;
+import com.legacy.remediation.model.maven.DependencyFilter;
+import com.legacy.remediation.model.maven.Module;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -31,6 +33,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Goal which touches a timestamp file.
@@ -42,59 +45,57 @@ import java.util.List;
 public class MojoMavenModuleAnalyzer extends AbstractMojo {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MojoMavenModuleAnalyzer.class);
-    private static final Modules modules = new Modules();
+    private static final ProjectView projectView = new ProjectView();
     @Parameter(defaultValue = "${project}", required = true, readonly = true)
     MavenProject project;
 
     @Parameter(defaultValue = "${reactorProjects}", required = true, readonly = true)
     private List<MavenProject> reactorProjects;
 
-    @Parameter(name = "resultDirectory", property = "dependency.graph.resultDirectory", defaultValue="target")
+    @Parameter(name = "resultDirectory", property = "dependency.graph.resultDirectory", defaultValue = "target")
     private String resultDirectory;
-    @Parameter(name = "renderImage", property = "dependency.graph.renderImage", defaultValue = "true")
-    private boolean renderImage;
 
-    @Parameter(name = "excludeClassifiers", property = "dependency.graph.excludeClassifiers", defaultValue="")
+    @Parameter(name = "excludeClassifiers", property = "dependency.graph.excludeClassifiers", defaultValue = "")
     private List<String> excludeClassifiers;
 
-    @Parameter(name = "excludeScopes", property = "dependency.graph.excludeScopes", defaultValue="")
+    @Parameter(name = "excludeScopes", property = "dependency.graph.excludeScopes", defaultValue = "")
     private List<String> excludeScopes;
 
-    @Parameter(name = "excludeArtifactIds", property = "dependency.graph.excludeArtifactIds", defaultValue="")
+    @Parameter(name = "excludeArtifactIds", property = "dependency.graph.excludeArtifactIds", defaultValue = "")
     private List<String> excludeArtifactIds;
 
-    @Parameter(name = "includeExternalDependencies", property = "dependency.graph.includeExternals", defaultValue="false")
+    @Parameter(name = "includeExternalDependencies", property = "dependency.graph.includeExternals", defaultValue = "false")
     private boolean includeExternalDependencies;
 
     private final DiagrammWriter writer = new DotWriter();
 
-    public void execute() throws MojoExecutionException {
+    private DependencyFilter filter;
 
+    private void initFilter() {
+        this.filter = new DependencyFilter(
+                new Module(project.getGroupId(), project.getArtifactId(), project.getVersion()),
+                excludeScopes, excludeClassifiers, excludeArtifactIds, includeExternalDependencies);
+    }
+
+    public void execute() throws MojoExecutionException {
+        if (filter == null) {
+            initFilter();
+        }
         String groupId = project.getGroupId();
         String artifactId = project.getArtifactId();
-        LOGGER.info("current module is "+groupId+":"+artifactId);
-        List<Dependency> dependencies = project.getDependencies();
-        LOGGER.info(dependencies.size()+" found");
-        dependencies.stream()
-                .peek(x -> LOGGER.info("check for "+x.getGroupId()+":"+x.getArtifactId()))
-                .filter(d -> !excludeClassifiers.contains(d.getClassifier()))
-                .filter(d -> !excludeScopes.contains(d.getScope()))
-                .filter(d -> !excludeArtifactIds.contains(d.getArtifactId()))
-                .filter(d -> includeExternalDependencies || d.getGroupId().equals(groupId))
-                .forEach(d -> {
-                    LOGGER.info("Keep depeendency between "+d.getArtifactId());
-                    modules.addDependency(artifactId, d.getArtifactId());
-                });
+        List<Dependency> dependencies = project.getDependencies().stream()
+                .map(md -> new Dependency(md.getGroupId(), md.getArtifactId(), md.getScope(), md.getClassifier(), md.getVersion()))
+                .collect(Collectors.toList());
 
-        if(isLastModule()) {
-            LOGGER.info("is last module, try to generate: "+modules);
+        filter.filter(dependencies).forEach(d -> projectView.addDependency(artifactId, d.getArtifactId()));
+
+        if (isLastModule()) {
+            LOGGER.info("is last module, try to generate: " + projectView);
             File resultFile = new File(resultDirectory);
-            if(!resultFile.exists()){
-                if(!resultFile.mkdirs()) {
-                    LOGGER.error("cannot create directory "+resultDirectory);
-                }
+            if (!resultFile.exists()) {
+                resultFile.mkdirs();
             }
-            this.writer.write(modules, resultDirectory+"/module-dependency");
+            this.writer.write(projectView, resultDirectory + "/module-dependency");
         }
     }
 
@@ -103,7 +104,7 @@ public class MojoMavenModuleAnalyzer extends AbstractMojo {
     }
 
     private MavenProject lastProject() {
-        return reactorProjects.get(reactorProjects.size() - 1);
+        return this.reactorProjects.get(this.reactorProjects.size() - 1);
     }
 
 
