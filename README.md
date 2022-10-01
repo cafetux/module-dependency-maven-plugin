@@ -1,3 +1,5 @@
+[![Coverage](.github/badges/jacoco.svg)](https://github.com/cafetux/module-dependency-maven-plugin/actions/workflows/maven.yml)
+
 # maven module interdependencies analyzer
 
 Sometimes, on Legacy projects, it's difficult to known which maven module is calling which maven module.
