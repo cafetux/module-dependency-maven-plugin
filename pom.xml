@@ -16,21 +16,6 @@
         <url>https://github.com/cafetux/module-dependency-maven-plugin.git</url>
     </scm>
 
-    <repositories>
-        <repository>
-            <id>central</id>
-            <name>Default Repository</name>
-            <layout>default</layout>
-            <url>https://repo1.maven.org/maven2</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
-    </repositories>
 
     <dependencies>
         <dependency>
@@ -49,12 +34,7 @@
             <artifactId>maven-core</artifactId>
             <version>3.8.6</version>
         </dependency>
-        <dependency>
-            <groupId>com.github.cafetux</groupId>
-            <artifactId>dot-diagram-to-picture</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
+         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>5.9.0</version>
@@ -107,10 +87,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-plugin-plugin</artifactId>
                 <version>3.6.0</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-plugin-plugin</artifactId>
                 <reportSets>
                     <reportSet>
                         <reports>

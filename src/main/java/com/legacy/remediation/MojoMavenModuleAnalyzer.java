@@ -16,10 +16,8 @@ package com.legacy.remediation;
  * limitations under the License.
  */
 
-import com.legacy.remediation.infrastructure.MindfusionPngRenderer;
 import com.legacy.remediation.model.DiagrammWriter;
 import com.legacy.remediation.infrastructure.DotWriter;
-import com.legacy.remediation.model.ImageRenderer;
 import com.legacy.remediation.model.module.Modules;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.AbstractMojo;
@@ -69,8 +67,6 @@ public class MojoMavenModuleAnalyzer extends AbstractMojo {
     private boolean includeExternalDependencies;
 
     private final DiagrammWriter writer = new DotWriter();
-    private final ImageRenderer imageriter = new MindfusionPngRenderer();
-
 
     public void execute() throws MojoExecutionException {
 
@@ -99,9 +95,6 @@ public class MojoMavenModuleAnalyzer extends AbstractMojo {
                 }
             }
             this.writer.write(modules, resultDirectory+"/module-dependency");
-            if(renderImage) {
-                imageriter.render(resultDirectory);
-            }
         }
     }
 
