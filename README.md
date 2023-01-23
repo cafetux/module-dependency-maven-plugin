@@ -10,17 +10,15 @@ You can visualize them with DOT intellij plugin.
 
 Generated file is named module-dependency.gv
 
-Not currently available on maven central.
-
 ## Usage
 
-If you have built this plugin in local, add on pom in build section:
+Plugin is available on maven central.
 
 ```xml
            <plugin>
                 <groupId>io.github.cafetux</groupId>
                 <artifactId>maven-modules-analyzer</artifactId>
-                <version>${version}</version>
+                <version>2.0</version>
                 <configuration/>
                 <executions>
                     <execution>
