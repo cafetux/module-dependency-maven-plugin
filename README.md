@@ -18,7 +18,7 @@ If you have built this plugin in local, add on pom in build section:
 
 ```xml
            <plugin>
-                <groupId>com.livido</groupId>
+                <groupId>io.github.cafetux</groupId>
                 <artifactId>maven-modules-analyzer</artifactId>
                 <version>${version}</version>
                 <configuration/>
