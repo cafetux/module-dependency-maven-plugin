@@ -10,7 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 /**
- * a writer implementation for DOT language (agraph description language)
+ * a writer implementation for DOT language (a graph description language)
  *
  * <a href="https://en.wikipedia.org/wiki/DOT_%28graph_description_language%29">...</a>
  */

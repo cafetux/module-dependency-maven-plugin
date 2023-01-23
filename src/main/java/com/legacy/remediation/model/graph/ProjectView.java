@@ -3,6 +3,9 @@ package com.legacy.remediation.model.graph;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The Project view represent the project, with all of his components and dependencies between modules.
+ */
 public class ProjectView {
 
     private final List<Node> modules = new ArrayList<>();
@@ -10,6 +13,10 @@ public class ProjectView {
     private int alphabetCount = 1;
 
 
+    /**
+     * Assigne a symbol (letter) to module and register it on the project
+     * @param module the module name to add
+     */
     public void add(String module) {
         if (!exist(module)) {
             this.modules.add(new Node(currentSymbol(), module));
@@ -34,6 +41,11 @@ public class ProjectView {
         return this.modules.stream().anyMatch(m -> m.getLabel().equals(moduleName));
     }
 
+    /**
+     *
+     * @param module the module name that have dependency to declare
+     * @param dependsOn the module label to add as dependency
+     */
     public void addDependency(String module, String dependsOn) {
         Node source = getModule(module);
         Node dependency = getModule(dependsOn);

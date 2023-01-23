@@ -71,29 +71,27 @@ public class MojoMavenModuleAnalyzer extends AbstractMojo {
 
     private DependencyFilter filter;
 
-    private void initFilter() {
-        this.filter = new DependencyFilter(
-                new Module(project.getGroupId(), project.getArtifactId(), project.getVersion()),
-                excludeScopes, excludeClassifiers, excludeArtifactIds, includeExternalDependencies);
-    }
 
     public void execute() throws MojoExecutionException {
-        if (filter == null) {
-            initFilter();
-        }
-        String groupId = project.getGroupId();
-        String artifactId = project.getArtifactId();
+
+        Module current = new Module(project.getGroupId(), project.getArtifactId(), project.getVersion());
+        this.filter = new DependencyFilter(
+                current,
+                excludeScopes, excludeClassifiers, excludeArtifactIds, includeExternalDependencies);
+
         List<Dependency> dependencies = project.getDependencies().stream()
                 .map(md -> new Dependency(md.getGroupId(), md.getArtifactId(), md.getScope(), md.getClassifier(), md.getVersion()))
                 .collect(Collectors.toList());
 
-        filter.filter(dependencies).forEach(d -> projectView.addDependency(artifactId, d.getArtifactId()));
+        filter.filter(dependencies).forEach(d -> projectView.addDependency(current.getArtifactId(), d.getArtifactId()));
 
         if (isLastModule()) {
             LOGGER.info("is last module, try to generate: " + projectView);
             File resultFile = new File(resultDirectory);
             if (!resultFile.exists()) {
-                resultFile.mkdirs();
+                if(!resultFile.mkdirs()) {
+                    LOGGER.error("cannot create result directory");
+                }
             }
             this.writer.write(projectView, resultDirectory + "/module-dependency");
         }
