@@ -27,12 +27,22 @@ public class DependencyFilter {
     public List<Dependency> filter(List<Dependency> dependencies) {
         return dependencies.stream()
                 .peek(x -> LOGGER.debug("check for "+x.toString()))
+                .filter(this::checkIfCurrentIsExcluded)
                 .filter(d -> includeExternalDependencies || isOnSameGroupId(d))
                 .filter(this::checkIfExcludeByScope)
                 .filter(this::checkIfExcludeByClassifier)
                 .filter(this::checkIfExcludeByArtifactId)
                 .collect(Collectors.toList());
 
+    }
+
+    private boolean checkIfCurrentIsExcluded(Dependency dependency) {
+        if(excludeArtifactIds.contains(current.getArtifactId())) {
+            LOGGER.debug("[excluded by current artifact id] " + dependency);
+            return false;
+        } else {
+            return true;
+        }
     }
 
     private boolean checkIfExcludeByScope(Dependency d) {

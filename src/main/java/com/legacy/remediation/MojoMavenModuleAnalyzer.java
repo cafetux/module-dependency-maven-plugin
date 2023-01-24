@@ -89,7 +89,7 @@ public class MojoMavenModuleAnalyzer extends AbstractMojo {
             LOGGER.info("is last module, try to generate: " + projectView);
             File resultFile = new File(resultDirectory);
             if (!resultFile.exists()) {
-                if(!resultFile.mkdirs()) {
+                if (!resultFile.mkdirs()) {
                     LOGGER.error("cannot create result directory");
                 }
             }

@@ -92,6 +92,13 @@ class DependencyFilterTest {
                 module("com.test", "module-1", "test", "initH2", "1.0")
         );
     }
+    @Test
+    void should_can_exclude_some_artifact_ids() {
+
+        DependencyFilter filter = given_filter_that_exclude_artifact_id(Arrays.asList("bootstrap","test-report"));
+
+        assertThat(filter.filter(moduleDependencies)).isEmpty();
+    }
 
     private DependencyFilter given_filter_that_exclude_classifier(List<String> classifier) {
         return new DependencyFilter(this.currentRootModule, new ArrayList<>(), classifier, new ArrayList<>(), false);
