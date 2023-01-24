@@ -18,7 +18,7 @@ Plugin is available on maven central.
            <plugin>
                 <groupId>io.github.cafetux</groupId>
                 <artifactId>maven-modules-analyzer</artifactId>
-                <version>2.0</version>
+                <version>2.1</version>
                 <configuration/>
                 <executions>
                     <execution>
@@ -36,7 +36,6 @@ You can use some configuration on plugin:
 ```xml
    <configuration>
      <resultDirectory>path to generate results (dot diagram and image). 'target' by default</resultDirectory>
-     <renderImage>false to disable image generation. true by default</renderImage>
     <excludeScopes>
         <param>test</param>
         <param>another scope of dependencies you want to exclude</param>

@@ -4,7 +4,7 @@
     <groupId>io.github.cafetux</groupId>
     <artifactId>maven-modules-analyzer</artifactId>
     <packaging>maven-plugin</packaging>
-    <version>2.1</version>
+    <version>2.2-SNAPSHOT</version>
     <name>io.github.cafetux:maven-modules-analyzer</name>
     <description>a maven plugin to generate schema of modules interdependencies</description>
     <url>https://github.com/cafetux/module-dependency-maven-plugin</url>
